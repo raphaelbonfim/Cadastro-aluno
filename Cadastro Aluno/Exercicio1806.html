@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<style>
+		</style>
+		<script>
+			var imagens = ["banner1.png","banner2.png","banner3.png","banner4.png"];
+			var imagemAtual = 0;
+			var x = 0;
+						
+			function criar()
+			{
+				var clone = document.getElementById("p").cloneNode(true);
+				
+				clone.setAttribute("id", "p" + x);
+				
+				var input  = clone.firstChild.nextSibling;
+				
+				input.setAttribute("id", "nome" + x);
+					
+				x++;
+				
+				var button = clone.lastChild;
+				alert(button.nodeName);
+				
+				button.setAttribute("onclick", "remover(this)");
+				
+				var filhoButton = button.firstChild;
+				
+				alert(filhoButton.nodeName);
+				button.removeChild(filhoButton);
+				
+				var texto = document.createTextNode("X");
+				
+				button.appendChild(texto);
+				
+				
+				document.getElementById("b").appendChild(clone);
+			}//criar
+//-------------------------------------------------------------------------------------------
+			//remover
+			function remover(botao)
+			{
+				var paidobotao = botao.parentNode
+				document.getElementById("b").removeChild(paidobotao);
+			}
+//-------------------------------------------------------------------------------------------
+			function validar()
+			{
+				//var form = document.forms[0];
+				var form = document.getElementById("f");
+				//alert(form.action);
+				if(form.data.value == "")
+				{
+					document.getElementById("m1").style = "display:inline";
+					form.data.style = "border-color:red";
+					form.data.focus();
+					return false;
+				}
+				if(form.nome.value == "")
+				{
+					document.getElementById("m2").style = "display:inline";
+					form.nome.style = "border-color:red";
+					form.nome.focus();
+					return false;
+				}
+				
+			}//validar
+//--------------------------------------------------------------------------------------------			
+			function limpar(elem, n)
+			{
+				elem.style = "border-color: black;color:blue";
+				document.getElementById("m" + n).style = "display:none";
+			}	
+//--------------------------------------------------------------------------------------------			
+			function trocarImagem(){
+			
+				imagemAtual = (imagemAtual + 1) % 4;
+				document.querySelector('.imag img').src=imagens[imagemAtual];
+	 		}
+			
+			setInterval(trocarImagem, 3000);
+		</script>
+	</head>
+	<body id = "b">
+		<figure class="imag">
+			<img src = "banner2.png">
+		</figure>
+		<h2>Matrículas</h2>		
+		<form action="pagina.html"  method="GET" onsubmit="return validar()" id="f">
+			<p>
+				<label>Data da Matrícula:</label>
+				<input type="date" name="data" onchange="limpar(this,1)">
+				<div style="display:none;" id="m1">A data deve ser preenchida</div>
+			</p>
+			<p id="p">
+				<label>Aluno:</label>
+				<input type="text" name="nome" onchange = "limpar(this,2)">				
+				<label>Curso:</label>
+				<select>
+					<option value = "informatica">Informática</option>
+					<option value = "marcenaria">Marcenaria</option>
+					<option value = "culinaria">Culinária</option>
+					<option value = "cortecustura">Corte e Costura</option>
+				</select>
+				<button onclick="criar()">+</button>
+				<div style="display:none;" id="m2">Nome deve ser preechido</div>
+			</p>
+			<br><input  type="submit" value="Enviar">			
+		</form>
+	</body>
+</html>
